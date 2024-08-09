@@ -31,11 +31,11 @@ final dio = () {
 }();
 
 Future<void> sendAnalytics(pb.AnalyticsMessage msg) async {
-  assert(Env.analyticsUrl.isNotEmpty);
+  
 
   final data = msg.writeToBuffer();
   await dio.post(
-    Env.analyticsUrl,
+    'https://example@sentry.io/add-your-dsn-here',
     // vHanda: Send POST data in DIO is so strange. It seems to mess up the data
     //         if I just pass the Uint8List
     data: Stream.fromIterable(data.map((e) => [e])),
