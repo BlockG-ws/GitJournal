@@ -27,8 +27,7 @@ jobs:
           encodedString: ${{ secrets.AND_KEYSTORE }}
       - name: setup keys
         run: | 
-          echo -e
-          "storePassword=$KEY_PASSWORD\n
+          echo -e "storePassword=$KEY_PASSWORD\n
           keyPassword=$KEY_PASSWORD\n
           keyAlias=ksk\n
           storeFile="$HOME/work/_temp/secret/ketstore.jks" >> "secrets/key.properties"
