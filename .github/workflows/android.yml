@@ -33,8 +33,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
-      - name: Setup Env
-        run: dart ./scripts/setup_env.dart
+     
       - name: Flutter Doctor
         run: flutter doctor
       - name: Get Flutter Deps

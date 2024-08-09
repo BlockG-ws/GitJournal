@@ -23,7 +23,7 @@ Future<void> initSentry() async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn = 'https://example@sentry.io/add-your-dsn-here';
+      options.dsn = Env.sentry;
     },
   );
 }
