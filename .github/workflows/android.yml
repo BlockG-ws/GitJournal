@@ -30,7 +30,7 @@ jobs:
           echo -e "storePassword=$KEY_PASSWORD\n
           keyPassword=$KEY_PASSWORD\n
           keyAlias=ksk\n
-          storeFile="$HOME/work/_temp/secret/ketstore.jks" >> "secrets/key.properties"
+          storeFile=\"$HOME/work/_temp/secret/ketstore.jks\"" >> "secrets/key.properties"
         env:
           KEY_PASSWORD: ${{ secrets.AND_KEYPASS }}
       - uses: actions/setup-java@v3
