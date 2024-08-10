@@ -82,7 +82,7 @@ android {
             //if (allFilesFromDir != null) {
             //    def keystoreFile = allFilesFromDir.first()
             //    keystoreFile.renameTo("secrets/keystore.jks")
-            }
+            //}
 
             //storeFile "secrets/keystore.jks"
             //storePassword System.getenv("SIGNING_STORE_PASSWORD")
