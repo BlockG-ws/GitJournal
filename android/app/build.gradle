@@ -35,22 +35,22 @@ if (keystorePropertiesFile.exists()) {
 }
 if (!keystoreProperties.containsKey('keyAlias')) {
     // to simplify local development
-    keystoreProperties['keyAlias'] = 'local'
-    keystoreProperties['keyPassword'] = 'local'
-    keystoreProperties['storeFile'] = 'local'
-    keystoreProperties['storePassword'] = 'local'
-    //def tmpFilePath = System.getProperty("user.home") + "/work/_temp/secrets"
-    //def allFilesFromDir = new File(tmpFilePath).listFiles()
+    //keystoreProperties['keyAlias'] = 'local'
+    //keystoreProperties['keyPassword'] = 'local'
+    //keystoreProperties['storeFile'] = 'local'
+    //keystoreProperties['storePassword'] = 'local'
+    def tmpFilePath = System.getProperty("user.home") + "/work/_temp/secrets"
+    def allFilesFromDir = new File(tmpFilePath).listFiles()
 
-    //if (allFilesFromDir != null) {
-    //    def keystoreFile = allFilesFromDir.first()
-    //    keystoreFile.renameTo("secrets/keystore.jks")
-    //}
+    if (allFilesFromDir != null) {
+        def keystoreFile = allFilesFromDir.first()
+        keystoreFile.renameTo("secrets/keystore.jks")
+    }
 
-    //storeFile = file("secrets/keystore.jks")
-    //storePassword System.getenv("SIGNING_STORE_PASSWORD")
-    //keyAlias System.getenv("SIGNING_KEY_ALIAS")
-    //keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+    keystoreProperties['keyAlias'] = "secrets/keystore.jks"
+    keystoreProperties['storePassword'] = System.getenv("SIGNING_STORE_PASSWORD")
+    keystoreProperties['keyAlias'] = System.getenv("SIGNING_KEY_ALIAS")
+     keystoreProperties['keyPassword'] = System.getenv("SIGNING_KEY_PASSWORD")
 }
 
 android {
