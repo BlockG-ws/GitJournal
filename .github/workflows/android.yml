@@ -29,7 +29,7 @@ jobs:
           encodedString: ${{ secrets.AND_KEYSTORE }}
       - name: setup keys
         run: | 
-          echo $GITHUB_WORKSPACE && echo -e "storePassword=$KEY_PASSWORD\nkeyPassword=$KEY_PASSWORD\nkeyAlias=ksk\nstoreFile=\"$HOME/work/_temp/secret/ketstore.jks\"" >> "$GITHUB_WORKSPACE/secrets/key.properties"
+          rm $GIRHUB_WORKSPACE/android/secrets/key.properties && echo -e "storePassword=$KEY_PASSWORD\nkeyPassword=$KEY_PASSWORD\nkeyAlias=ksk\nstoreFile=\"$HOME/work/_temp/secret/ketstore.jks\"" >> "$GITHUB_WORKSPACE/android/secrets/key.properties"
         env:
           KEY_PASSWORD: ${{ secrets.AND_KEYPASS }}
       - uses: actions/setup-java@v3
