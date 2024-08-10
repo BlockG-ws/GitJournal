@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          path: "."
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
@@ -28,7 +29,7 @@ jobs:
           encodedString: ${{ secrets.AND_KEYSTORE }}
       - name: setup keys
         run: | 
-          echo -e "storePassword=$KEY_PASSWORD\nkeyPassword=$KEY_PASSWORD\nkeyAlias=ksk\nstoreFile=\"$HOME/work/_temp/secret/ketstore.jks\"" >> "$GITHUB_WORKSPACE/secrets/key.properties"
+          echo $GITHUB_WORKSPACE && echo -e "storePassword=$KEY_PASSWORD\nkeyPassword=$KEY_PASSWORD\nkeyAlias=ksk\nstoreFile=\"$HOME/work/_temp/secret/ketstore.jks\"" >> "$GITHUB_WORKSPACE/secrets/key.properties"
         env:
           KEY_PASSWORD: ${{ secrets.AND_KEYPASS }}
       - uses: actions/setup-java@v3
@@ -52,10 +53,6 @@ jobs:
         run: flutter pub get --suppress-analytics
       - name: Build
         run: ./scripts/build_android.sh
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
