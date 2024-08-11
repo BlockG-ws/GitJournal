@@ -59,5 +59,3 @@ jobs:
           name: APK
           path: "*.apk"
           if-no-files-found: error
-      - name: Publish Alpha
-        run: cd android && fastlane alphaBuild
