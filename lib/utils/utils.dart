@@ -66,7 +66,10 @@ void showErrorMessageSnackbar(BuildContext context, String message) {
 }
 
 void showErrorSnackbar(BuildContext context, Object error) {
-  assert(error is Error || error is Exception, "Error is ${error.runtimeType}");
+  assert(
+    error is Error || error is Exception || error is String,
+    "Error is ${error.runtimeType}",
+  );
   var message = error.toString();
   showErrorMessageSnackbar(context, message);
 }
@@ -105,7 +108,7 @@ bool folderWithSpecExists(BuildContext context, String spec) {
 }
 
 Future<void> shareNote(Note note) async {
-  return Share.share(NoteStorage.serialize(note));
+  await Share.share(NoteStorage.serialize(note));
 }
 
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {

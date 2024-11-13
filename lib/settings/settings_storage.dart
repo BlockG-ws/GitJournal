@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:android_external_storage/android_external_storage.dart';
+import 'package:android_x_storage/android_x_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/l10n.dart';
@@ -191,6 +192,7 @@ class SettingsStorageScreen extends StatelessWidget {
             subtitle: Text(repo.repoPath),
             enabled: !storageConfig.storeInternally,
           ),
+        const ShareRepoTile(),
       ],
     );
 
@@ -205,6 +207,45 @@ class SettingsStorageScreen extends StatelessWidget {
         ),
       ),
       body: list,
+    );
+  }
+}
+
+class ShareRepoTile extends StatefulWidget {
+  const ShareRepoTile({super.key});
+
+  @override
+  State<ShareRepoTile> createState() => _ShareRepoTileState();
+}
+
+class _ShareRepoTileState extends State<ShareRepoTile> {
+  var _isExporting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(context.loc.exportRepo),
+      subtitle: Text(context.loc.shareAsZip),
+      enabled: !_isExporting,
+      onTap: () async {
+        try {
+          setState(() {
+            _isExporting = true;
+          });
+          var repo = context.read<GitJournalRepo>();
+          await repo.exportRepo();
+        } catch (e, st) {
+          Log.e("Exporting Repo", ex: e, stacktrace: st);
+          showErrorMessageSnackbar(
+            context,
+            context.loc.failedToExport,
+          );
+        }
+
+        setState(() {
+          _isExporting = false;
+        });
+      },
     );
   }
 }
@@ -246,7 +287,14 @@ Future<String> _getExternalDir(BuildContext context) async {
     }
   }
 
-  var path = await AndroidExternalStorage.getExternalStorageDirectory();
+  final _androidXStoragePlugin = AndroidXStorage();
+  String? path;
+  try {
+    path = await _androidXStoragePlugin.getExternalStorageDirectory();
+  } on PlatformException catch (e) {
+    Log.e("Error getting external storage directory", ex: e);
+  }
+
   if (path != null) {
     if (await _isDirWritable(path)) {
       return path;

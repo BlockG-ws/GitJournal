@@ -9,13 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_setup/screens.dart';
 import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/history/history_screen.dart';
+import 'package:gitjournal/folder_listing/view/folder_listing.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/error_screen.dart';
-import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
@@ -23,7 +22,7 @@ import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:launch_app_store/launch_app_store.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:time/time.dart';
@@ -51,11 +50,11 @@ class _AppDrawerState extends State<AppDrawer>
     slideAnimation = Tween(begin: const Offset(0.0, -0.5), end: Offset.zero)
         .animate(CurvedAnimation(
       parent: animController,
-      curve: standardEasing,
+      curve: Easing.legacy,
     ));
     sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: animController,
-      curve: standardEasing,
+      curve: Easing.legacy,
     ));
   }
 
@@ -186,15 +185,6 @@ class _AppDrawerState extends State<AppDrawer>
               title: context.loc.drawerFolders,
               onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
               selected: currentRoute == FolderListingScreen.routePath,
-            ),
-          if (appConfig.experimentalHistory && repo != null)
-            _buildDrawerTile(
-              context,
-              icon: Icons.history,
-              isFontAwesome: true,
-              title: context.loc.drawerHistory,
-              onTap: () => _navTopLevel(context, HistoryScreen.routePath),
-              selected: currentRoute == HistoryScreen.routePath,
             ),
           if (repo != null)
             _buildDrawerTile(
